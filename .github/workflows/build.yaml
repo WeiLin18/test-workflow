@@ -1,0 +1,33 @@
+name: build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/install-deps
+
+      - name: Run linter
+        run: pnpm run lint
+
+      - name: Run Prettier
+        run: pnpm format
+
+      - name: Type check
+        run: pnpm type-check
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions/install-deps
+
+      - name: Build project
+        run: pnpm run build
